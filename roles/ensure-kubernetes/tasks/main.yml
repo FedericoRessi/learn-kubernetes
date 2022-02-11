@@ -3,7 +3,11 @@
 
 - name: Install Kubernetes
   become: true
-  become_user: root
   dnf:
     name: '{{ ensure_vagrant_packages }}'
     state: latest
+
+- name: Install collection kubernetes.core
+  community.general.ansible_galaxy_install:
+    type: collection
+    name: kubernetes.core

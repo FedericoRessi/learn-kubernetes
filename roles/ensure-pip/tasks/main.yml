@@ -1,0 +1,6 @@
+---
+# tasks file for ensure-pip
+
+- name: Ensure Pip is installed
+  become: true
+  shell: python3 -m ensurepip --upgrade

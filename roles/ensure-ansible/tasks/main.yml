@@ -1,0 +1,7 @@
+---
+# tasks file for ensure-ansible
+
+- name: Install Ansible
+  pip:
+    name: ansible
+    state: latest
