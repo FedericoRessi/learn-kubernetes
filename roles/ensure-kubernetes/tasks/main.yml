@@ -3,7 +3,7 @@
 
 - block:
   - name: Check Kubernetes Pods
-    shell: kubectl get po -A
+    shell: kubectl version
     register: ensure_kubernetes_check
 
   rescue:
@@ -16,14 +16,17 @@
       name: '{{ ensure_vagrant_packages }}'
       state: latest
 
-  - name: Install collection kubernetes.core
-    community.general.ansible_galaxy_install:
-      type: collection
-      name: kubernetes.core
-    delegate_to: localhost
+#  - name: Install collection kubernetes.core
+#    community.general.ansible_galaxy_install:
+#      type: collection
+#      name: kubernetes.core
+#    delegate_to: localhost
+
+  - name: Set Kubernete context
+    shell: kubectl config use-context minikube
 
   - name: Check Kubernetes Pods
-    shell: kubectl get po -A
+    shell: kubectl version
     register: ensure_kubernetes_check
 
 - debug: var=ensure_kubernetes_check.stdout_lines

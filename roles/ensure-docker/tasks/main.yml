@@ -3,15 +3,17 @@
 
 - block:
   - name: Check Docker deamon conectivity
-    shell: docker run hello-world
+    shell: docker version
     changed_when: false
-    register: ensure_minikube_ckeck_docker
+    register: ensure_docker_ckeck
 
   rescue:
   - name: Ensure Docker deamon is installed
     include_tasks: ensure-docker.yml
 
   - name: Check Docker deamon conectivity
-    shell: docker run hello-world
+    shell: docker version
     changed_when: false
-    register: ensure_minikube_ckeck_docker
+    register: ensure_docker_ckeck
+
+- debug: var=ensure_docker_ckeck.stdout_lines
