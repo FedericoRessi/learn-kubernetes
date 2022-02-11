@@ -1,13 +1,29 @@
 ---
 # tasks file for ensure-kubernetes
 
-- name: Install Kubernetes
-  become: true
-  dnf:
-    name: '{{ ensure_vagrant_packages }}'
-    state: latest
+- block:
+  - name: Check Kubernetes Pods
+    shell: kubectl get po -A
+    register: ensure_kubernetes_check
 
-- name: Install collection kubernetes.core
-  community.general.ansible_galaxy_install:
-    type: collection
-    name: kubernetes.core
+  rescue:
+  - name: Ensure Minikube is running
+    include_role: name=ensure-minikube
+
+  - name: Install Kubernetes
+    become: true
+    dnf:
+      name: '{{ ensure_vagrant_packages }}'
+      state: latest
+
+  - name: Install collection kubernetes.core
+    community.general.ansible_galaxy_install:
+      type: collection
+      name: kubernetes.core
+    delegate_to: localhost
+
+  - name: Check Kubernetes Pods
+    shell: kubectl get po -A
+    register: ensure_kubernetes_check
+
+- debug: var=ensure_kubernetes_check.stdout_lines

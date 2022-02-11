@@ -61,7 +61,7 @@ Vagrant.configure("2") do |config|
   # information on available options.
 
   config.vm.provision "ansible" do |ansible|
-    ansible.verbose = "v"
+    # ansible.verbose = "v"
     ansible.playbook = "playbooks/vagrant/provision.yaml"
     ansible.compatibility_mode = "2.0"
     ansible.config_file = "ansible.cfg"

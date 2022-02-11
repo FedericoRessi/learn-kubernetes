@@ -2,5 +2,4 @@
 
 - hosts: all
   roles:
-  - ensure-docker
-  - ensure-minikube
+  - ensure-kubernetes
