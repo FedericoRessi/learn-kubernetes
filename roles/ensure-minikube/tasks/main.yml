@@ -1,0 +1,19 @@
+---
+# tasks file for roles/ensure-minikube
+
+- name: Install Minikube
+  become: true
+  dnf:
+    name: https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm
+    state: latest
+    disable_gpg_check: true
+
+- block:
+  - name: Start Minikube
+    shell: minikube start
+    register: ensure_minikube_start
+  - debug: var=ensure_minikube_start
+
+  rescue:
+  - debug: var=ensure_minikube_start
+    failed_when: true

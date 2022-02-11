@@ -1,0 +1,43 @@
+---
+
+- become: true
+  block:
+
+  - name: Install dnf-plugins-core package
+    dnf:
+      name: dnf-plugins-core
+      state: latest
+
+  - name: Add Docker-CE repository
+    shell: >
+      dnf config-manager --add-repo '{{ ensure_docker_repo_url }}'
+
+  - name: Install Docker-CE
+    dnf:
+      name: [docker-ce, docker-ce-cli, containerd.io]
+      state: latest
+
+  - name: Enable Docker-CE service
+    systemd:
+      name: docker
+      enabled: yes
+      state: started
+
+  - name: Ensure group "docker" exists
+    group:
+      name: docker
+      state: present
+
+  - name: Add user "{{ ansible_user }}" to group docker
+    user:
+      name: "{{ ansible_user }}"
+      groups: docker
+      append: true
+
+
+# reset_connection doesn't support conditionals.
+- name: Reset connection so docker group is picked up.
+  meta: reset_connection
+
+#  - name: Refresh docker group permissions
+#    shell: newgrp docker

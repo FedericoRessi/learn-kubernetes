@@ -1,0 +1,17 @@
+---
+# tasks file for roles/ensure-docker
+
+- block:
+  - name: Check Docker deamon conectivity
+    shell: docker run hello-world
+    changed_when: false
+    register: ensure_minikube_ckeck_docker
+
+  rescue:
+  - name: Ensure Docker deamon is installed
+    include_tasks: ensure-docker.yml
+
+  - name: Check Docker deamon conectivity
+    shell: docker run hello-world
+    changed_when: false
+    register: ensure_minikube_ckeck_docker
