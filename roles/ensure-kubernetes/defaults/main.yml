@@ -1,0 +1,5 @@
+---
+# defaults file for ensure-kubernetes
+
+ensure_vagrant_packages:
+  - kubernetes

@@ -1,0 +1,9 @@
+---
+# tasks file for ensure-kubernetes
+
+- name: Install Kubernetes
+  become: true
+  become_user: root
+  dnf:
+    name: '{{ ensure_vagrant_packages }}'
+    state: latest
